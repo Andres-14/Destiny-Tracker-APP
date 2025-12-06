@@ -1,11 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-package="com.example.destiny_tracker_progiii">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="destiny_tracker_progiii"
+        android:label="Destiny Tracker"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"> </application>
         <activity
             android:name=".MainActivity"
             android:exported="true"

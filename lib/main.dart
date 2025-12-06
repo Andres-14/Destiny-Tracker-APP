@@ -15,11 +15,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Destiny Tracker',
       theme: AppTheme.lightTheme,
-      
       initialRoute: AppRoutes.home,
-      
       routes: getApplicationRoutes(),
-      
       debugShowCheckedModeBanner: false,
     );
   }
