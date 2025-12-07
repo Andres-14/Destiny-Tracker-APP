@@ -12,9 +12,9 @@ Future<List<DestinyItem>> fetchClanBanners() async {
   final url = Uri.parse('$_baseUrl$_clanSearchPath');
 
   final Map<String, dynamic> requestBody = {
-      'groupType': 1, 
-      'currentPage': 1,
-      'sortBy': 1,
+    'groupType': 1, 
+    'currentPage': 1,
+    'sortBy': 3,
   };
 
   final response = await http.post(
@@ -23,9 +23,10 @@ Future<List<DestinyItem>> fetchClanBanners() async {
       'X-API-Key': _apiKey,
       'Accept-Language': 'en',
       'Content-Type': 'application/json',
+      'User-Agent': 'DestinyTrackerApp/1.0 (Contact: andresjsgs.14@gmail.com)',
     },
-    body: json.encode(requestBody),
-    );
+     body: json.encode(requestBody),
+  );
 
   if (response.statusCode != 200) {
     throw Exception('Error en la petición API. Código de estado: ${response.statusCode}.');

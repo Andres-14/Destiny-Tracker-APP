@@ -90,11 +90,10 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             );
-          } else if (snapshot.hasData && snapshot.data!.isNotEmpty) { 
+           } else if (snapshot.hasData && snapshot.data!.isNotEmpty) { 
             return _ItemListView(items: snapshot.data!);
           }
-          
-          return const Center(child: Text('No se encontraron clanes en la búsqueda general.'));;
+          return const Center(child: Text('No se encontraron clanes en la búsqueda general.'));
         },
       ),
     );
