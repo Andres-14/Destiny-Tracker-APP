@@ -8,7 +8,7 @@ class InfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ficha de los Desarrolladores'),
+        title: const Text('Ficha de los Desarrolladores', style: TextStyle(fontWeight: FontWeight.bold),),
       ),
       body: Center(
         child: SingleChildScrollView( 
@@ -32,19 +32,18 @@ class InfoScreen extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               
-              const Divider(color: AppTheme.accentSelected),
+              const Divider(color: AppColors.selectedIcon),
               
               Text(
                 'Sobre DESTINY TRACKER',
-                style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontSize: 22, color: AppTheme.accentSelected),
+                style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontSize: 22, color: AppColors.selectedIcon),
               ),
               const SizedBox(height: 10),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  'DESTINY TRACKER es una app pensada en mostrar informacion sobre los diversos clanes que pueden encontrarse en el juego.',
+                  'DESTINY TRACKER es una app pensada en mostrar informacion sobre los diversos items y objetos existentes en el universo del juego y que se pueden guardar en el inventario del jugador.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: AppTheme.lightText),
                 ),
               ),
               const SizedBox(height: 20),
