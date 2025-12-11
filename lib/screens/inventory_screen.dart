@@ -3,6 +3,8 @@ import '../services/auth_service.dart';
 import 'package:destiny_tracker_progiii/routes/app_routes.dart';
 import 'package:destiny_tracker_progiii/services/bungie_api_service.dart';
 import 'package:destiny_tracker_progiii/themes/app_theme.dart';
+import 'package:destiny_tracker_progiii/screens/character_detail_screen.dart'; 
+
 
 class InventoryScreen extends StatefulWidget {
   const InventoryScreen({super.key});
@@ -63,7 +65,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -71,8 +72,9 @@ class _InventoryScreenState extends State<InventoryScreen> {
               ),
             );
           } else if (snapshot.hasData) {
-            final characters = snapshot.data!['characters']['data'];
-            final vaultItems = snapshot.data!['profileInventories']['data']['items'];
+            
+            final characters = snapshot.data!['characters']?['data'] ?? {};
+            final vaultItems = snapshot.data!['profileInventories']?['data']?['items'] ?? [];
             
             return SingleChildScrollView(
               padding: const EdgeInsets.all(8.0),
@@ -84,25 +86,41 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     child: Text('Personajes Activos:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   ),
                   
-                  if (characters != null)
-                    ...characters.entries.map((entry) {
+                  if (characters.isNotEmpty)
+                    ...characters.entries.map<Widget>((entry) {
+                      final characterId = entry.key;
                       final charData = entry.value;
+
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Card(
                           child: ListTile(
                             leading: Icon(Icons.person, color: AppColors.selectedIcon),
-                            title: Text('${_getClassTypeName(charData['classType'])}', 
+                            title: Text('${_getClassTypeName(charData['classType'] ?? -1)}', 
                                 style: const TextStyle(fontWeight: FontWeight.bold)),
-                            subtitle: Text('Luz: ${charData['light']}', 
+                            subtitle: Text('Luz: ${charData['light'] ?? 0}', 
                                 style: const TextStyle(color: AppColors.primaryButton)), 
                             trailing: const Icon(Icons.chevron_right),
                             onTap: () {
+                              // *** Implementación de la navegación al detalle del personaje ***
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => CharacterDetailScreen(
+                                    characterData: charData,
+                                    characterId: characterId,
+                                  ),
+                                ),
+                              );
                             },
                           ),
                         ),
                       );
-                    }).toList(),
+                    }).toList()
+                  else
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Center(child: Text("No se encontraron personajes activos")),
+                    ),
                   
                   const Divider(height: 30, color: AppColors.appbarCard),
                   
@@ -117,7 +135,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
               ),
             );
           } else {
-            
             return const Center(child: Text('No se encontraron datos de inventario.'));
           }
         },

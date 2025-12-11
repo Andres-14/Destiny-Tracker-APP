@@ -48,7 +48,7 @@ class InfoScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                'Proyecto Final - Versión 1.0.0',
+                'Proyecto Final - Versión 1. "Ya no se cual es, solo quiero que funcione por favor" .67',
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ],

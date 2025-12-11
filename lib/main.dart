@@ -8,6 +8,8 @@ import 'package:destiny_tracker_progiii/screens/login_screen.dart';
 import 'package:destiny_tracker_progiii/screens/inventory_screen.dart';
 import 'package:destiny_tracker_progiii/screens/info_screen.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
@@ -29,36 +31,34 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _appLinks = AppLinks(); 
-    _initDeepLinks();
+    _listenForDeepLinks(); 
   }
 
-  void _handleDeepLink(Uri? uri) {
-    if (uri != null && uri.path == '/oauth2redirect') {
-      final code = uri.queryParameters['code'];
-      if (code != null) {
-        _authService.exchangeCodeForTokens(code).then((_) {
-          if (mounted) {
-            Navigator.of(context).pushReplacementNamed(Routes.inventory);
-          }
-        }).catchError((e) {
-          print('Error al intercambiar código: $e');
-          if (mounted) {
-            Navigator.of(context).pushReplacementNamed(Routes.login);
-          }
-        });
-      }
-    }
-  }
-
-  void _initDeepLinks() async {
+  void _listenForDeepLinks() {
     _appLinks.uriLinkStream.listen((Uri? uri) {
       _handleDeepLink(uri);
     });
   }
 
+  void _handleDeepLink(Uri? uri) {
+    if (uri != null && uri.scheme == 'bungieinventoryapp' && uri.host == 'oauth2redirect') {
+      final code = uri.queryParameters['code'];
+      if (code != null) {
+        _authService.exchangeCodeForTokens(code).then((_) {
+          navigatorKey.currentState!.pushReplacementNamed(Routes.inventory);
+        }).catchError((e) {
+          print('Error al intercambiar código: $e');
+          navigatorKey.currentState!.pushReplacementNamed(Routes.login);
+        });
+      }
+    } 
+  }
+  
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       title: 'Destiny Inventory Tracker',
       theme: AppTheme.darkTheme,
